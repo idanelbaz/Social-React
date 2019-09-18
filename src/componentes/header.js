@@ -37,7 +37,7 @@ class header extends Component {
                         this.props.user !== null && 
                     <NavDropdown title={this.props.user.data.email} id="basic-nav-dropdown">
                         <NavDropdown.Item href="#addpost">Add Post</NavDropdown.Item>
-                        <NavDropdown.Item onClick={this.handleLogOut} href="/" >Log out</NavDropdown.Item>
+                        <NavDropdown.Item onClick={this.handleLogOut} href="/signup" >Log out</NavDropdown.Item>
                     </NavDropdown>
                     }
                     </Nav>
