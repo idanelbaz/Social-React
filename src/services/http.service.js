@@ -4,7 +4,7 @@ var axios = Axios.create({
 });
 
 const BASE_URL = process.env.NODE_ENV === 'production'
-    ? '/api/'
+    ? 'https://mysreact.herokuapp.com/api/'
     : '//localhost:3000/api/'
 
 async function ajax(endpoint, method = 'get', data = null, params = null) {
