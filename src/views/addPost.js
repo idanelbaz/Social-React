@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 class addNewPost extends Component {
     state = {
-        postToUpload: {title:'', image_url:''},
+        postToUpload: {title:'', image_url:'', userId:'' , userEmail: ''},
     };
 
     async componentDidMount() {
@@ -34,6 +34,8 @@ class addNewPost extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
+        await this.setState((state) => ({ postToUpload: { ...state.postToUpload, userId: this.props.user._id } }));
+        await this.setState((state) => ({ postToUpload: { ...state.postToUpload, userEmail: this.props.user.email } }));
         const { dispatch } = this.props
         await dispatch(addPost(this.state.postToUpload))
         const { history } = this.props;
@@ -43,7 +45,7 @@ class addNewPost extends Component {
     handleImageChange = async (e) =>{
         e.preventDefault();
         let file = e.target.files[0];
-        if(file.size > 26000) { 
+        if(file.size > 35000) { 
             this.refs.image.value = '';
             this.notify('The file is too big, upload another one')
         }
@@ -57,6 +59,7 @@ class addNewPost extends Component {
 
     render() {
         const { postToUpload} = this.state;
+        
         return (
             <div className="post-details">
                 <ToastContainer />

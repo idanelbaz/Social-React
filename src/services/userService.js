@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import httpService from './http.service.js';
 
 
 export default {
@@ -6,6 +6,7 @@ signUp,
 logIn,
 logOut,
 getLoggedinUser,
+addFollowOn,
 }
 
 
@@ -16,26 +17,24 @@ function getLoggedinUser() {
 
 async function logIn(user) {
     try {
-            const res = await Axios.post(_getUrl('login'), user)
-            saveToStorage('user', res.data)
-            return res.status;
+            const currUser = await httpService.post(_getUrl('login'), user);
+            saveToStorage('user', currUser)
     }
     catch (err) {
-        if (err.response.status !== 200) {
-           return err.response.status
-        }
+        console.log(err)
+        throw err;
     }
 }
 
 async function signUp(user) {
     try {
-        const res = await Axios.post(_getUrl('register'), user)
-        return res.status;
+        const res = await httpService.post(_getUrl('signup'), user);
+        console.log(res)
+        saveToStorage('user', res)
     }
     catch (err) {
-        if (err.response.status !== 200) {
-            return err.response.status
-        }
+        console.log(err, 'cannot do login');
+        throw err;
     }
 }
 
@@ -43,8 +42,24 @@ function logOut() {
     localStorage.clear();
 }
 
-function _getUrl(action = '') {
-    return `https://moonsite-rn-test.herokuapp.com/api/usr/${action}`;
+async function addFollowOn(userFollowedOnId){ 
+    try {
+        const user = getLoggedinUser()
+        const userWithFollow =  await httpService.put(_getUrl('addFollower'),{userFollowedOnId, userThatFollow: user});
+        saveToStorage('user', userWithFollow)
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
+
+
+
+
+
+function _getUrl(id = '') {
+    return `user/${id}`
 }
 
 function saveToStorage(key, value) {

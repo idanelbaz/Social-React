@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 class signup extends Component {
 
-    state = { newUser: {password:'', email:''} }
+    state = { newUser: {password:'', email:'', followOn:[] } }
 
     async componentDidMount() {
         const { dispatch } = this.props
@@ -33,17 +33,13 @@ class signup extends Component {
         e.preventDefault();
         const { dispatch } = this.props
         try { 
-            const res = await dispatch(signUp(this.state.newUser))
-            if(res === 200){ 
-                const { history } = this.props;
-                history.push('/login'); 
+            await dispatch(signUp(this.state.newUser))  
+            const { history } = this.props;
+            history.push('/'); 
             }
-            else { 
-                throw new Error('Cannot signup')
-            }
-            }
-        catch{ 
+        catch (err){ 
             this.notify('Cannot do sign up, Email or Password are incorrect, please try again')
+            console.log(err);
         } 
     }
 

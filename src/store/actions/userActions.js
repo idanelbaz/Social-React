@@ -13,16 +13,12 @@ export const getUser = () => {
 export const signUp = (user) => {
     return async (dispatch) => {
        try{ 
-            const signUpTry = await userService.signUp(user);
-            if(signUpTry !== 200){ 
-                return signUpTry
-            }
+            await userService.signUp(user);
             const response = userService.getLoggedinUser()
             dispatch({ type: types.GET_USER, data: response })
-            return signUpTry;
        }
        catch(err){ 
-            console.log(err)
+            throw err;
        }
      
     };
@@ -31,16 +27,12 @@ export const signUp = (user) => {
 export const logIn = (user) => {
     return async (dispatch) => {
        try{ 
-           const logInTry = await userService.logIn(user)
-           if(logInTry !== 200){ 
-               return logInTry
-           }
+            await userService.logIn(user)
             const response = userService.getLoggedinUser()
             dispatch({ type: types.GET_USER, data: response })
-            return logInTry;
        }
        catch(err){ 
-            console.log(err)
+            throw err
        }
         
     };
@@ -51,6 +43,19 @@ export const logOut = () => {
         userService.logOut();
         const response = userService.getLoggedinUser()
         dispatch({ type: types.GET_USER, data: response })
+    };
+};
+
+export const addFollow = (userId) => {
+    return async (dispatch) => {
+       try{ 
+            await userService.addFollowOn(userId)
+            getUser();
+       }
+       catch(err){ 
+            throw err
+       }
+        
     };
 };
 

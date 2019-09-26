@@ -135,6 +135,16 @@ button {
   margin-bottom: 20px;
 }
 
+.cardSub{ 
+  background-color: #17a2b8;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  color: #ffffff;
+  line-height: 1.5;
+  border-radius: .25rem;
+}
+
 .badgeTitle {
   width: 100%;
 }

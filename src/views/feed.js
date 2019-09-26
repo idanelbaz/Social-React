@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getUser } from '../store/actions/userActions';
+import { getUser, addFollow } from '../store/actions/userActions';
 import { getAllPosts, deletePost, filterPosts } from '../store/actions/postsActions';
-import {addFollow} from '../store/actions/followAction';
 import PostCard from '../componentes/postCard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Badge} from 'react-bootstrap';
 
 
 class feed extends Component {
@@ -22,9 +22,13 @@ class feed extends Component {
                 const { history } = this.props;
                 history.push('/signup');
             }
-            else await dispatch(getAllPosts())
+            else { 
+                await dispatch(getAllPosts())
+            } 
         }
-        catch {}
+        catch(err) {
+            console.log(err);
+        }
     }
 
 
@@ -37,16 +41,13 @@ class feed extends Component {
     followUser =async (userToFollow) => { 
        const { dispatch } = this.props
        try{ 
-            const res = await dispatch(addFollow(userToFollow))
-            if(res === 200) this.notify('You follow user')
-            else { 
-                throw new Error('Cannot make following')
-            }
+            await dispatch(addFollow(userToFollow))
+            await dispatch(getUser())
         }
         catch(err){ 
                 this.notify('Cannot make following')
         } 
-       }
+    }
     
 
     handleSearch = async (e) => { 
@@ -66,17 +67,20 @@ class feed extends Component {
 
             <div className="feed">
                 <ToastContainer />
-                {posts !== null && user!== null &&
+                {posts.length > 0 && user!== null &&
                 <input className="titleInput" type="text" name="title" value={filterBy.title} onChange={this.handleSearch} placeholder="Search posts by title"></input>
                 }
               
-                {posts !== null && user!== null &&
+                {posts.length > 0 && user!== null &&
                     <div className="posts-container">
                          {
                         posts.map(post =>
-                            <PostCard deletePost={this.deletePost} followUser={this.followUser} user={user} post={post} key={post.post_id}></PostCard>
+                            <PostCard deletePost={this.deletePost} followUser={this.followUser} user={user} post={post} key={post._id}></PostCard>
                         )}
                     </div>
+                }
+                {posts.length === 0 &&
+                     <h1><Badge className="badgeTitle" variant="secondary">No posts to show</Badge></h1>
                 }
             </div>
         )

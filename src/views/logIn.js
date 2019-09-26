@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logIn } from '../store/actions/userActions';
+import { logIn, getUser } from '../store/actions/userActions';
 import {Form,Badge} from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,14 +26,17 @@ class login extends Component {
         e.preventDefault();
         const { dispatch } = this.props
         try { 
-        const res = await dispatch(logIn(this.state.user))
-        if(res === 200){ 
+        await dispatch(logIn(this.state.user))
+        await dispatch(getUser())
+        if(this.props.user === null || !this.props.user) { 
+            this.notify('Email or Password are incorrect, please try again')
+        }
+        else { 
             const { history } = this.props;
             history.push('/'); 
         }
-        else { 
-            throw new Error('Cannot login')
-        }}
+
+        }
         catch(err){ 
             this.notify('Email or Password are incorrect, please try again')
         }      
@@ -61,7 +64,7 @@ class login extends Component {
                     </Form>
                 </div>
                 <NavLink exact to="/signup">
-                    Return to sign up
+                    Don't got an account yet? 
                 </NavLink>
             </div>
         )

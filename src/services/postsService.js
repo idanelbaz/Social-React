@@ -1,21 +1,16 @@
-import Axios from 'axios';
-import userService from './userService'
+import httpService from './http.service.js';
 
 export default {
   query, 
   addPost,
   deletePost,
-  getUserPosts,
 }
 
 
 async function query() {
-  const user = userService.getLoggedinUser();
-  const token = user.data.token;
   try {
-    const res = await Axios.get(_getUrl('get-all-posts'), { headers: {"Authorization" : `${token}`}})
-    if(res === "unauthorized") throw new Error ('unauthorized')
-    if(res.data.res === true)return res.data.data;
+    const res = await httpService.get(_getUrl());
+    return res;
   }
   catch (err) {
    throw err;
@@ -23,38 +18,17 @@ async function query() {
 }
 
 async function addPost(post) {
-  const user = userService.getLoggedinUser();
-  const token = user.data.token;
   try {
-    const res = await Axios.post(_getUrl('add-post'),post,{ headers: {"Authorization" : `${token}`}})
-    return res.status
+      await httpService.post(_getUrl('addpost'), post);
   }
   catch (err) {
-    if (err.response.status !== 200) {
-      return err.response.status
-   }
+      throw err;
   }
 }
 
-async function deletePost(post_id) {
-  const user = userService.getLoggedinUser();
-  const token = user.data.token;
+async function deletePost(postId) {
   try {
-    const res = await Axios.delete(_getUrl(`delete-post-by-id/${post_id}`), { headers: {"Authorization" : `${token}`}})
-    if(res.res === true) return true;
-  }
-  catch (err) {
-    throw err;
-  }
-}
-
-async function getUserPosts() {
-  const user = userService.getLoggedinUser();
-  const token = user.data.token;
-  try {
-    const res = await Axios.get(_getUrl('/post/get-posts-by-user-id'), { headers: {"Authorization" : `${token}`}})
-    if(res === "unauthorized") throw new Error ('unauthorized')
-    if(res.res === true)return res.data;
+   await httpService.delete(_getUrl(postId));
   }
   catch (err) {
     throw err;
@@ -62,9 +36,6 @@ async function getUserPosts() {
 }
 
 
-
-
-
-function _getUrl(action = '') {
-  return `https://moonsite-rn-test.herokuapp.com/api/post/${action}`;
+function _getUrl(id = '') {
+  return `post/${id}`
 }

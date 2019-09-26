@@ -1,7 +1,7 @@
 import types from "../types";
 
 export default function
-  postsReducer(state = { posts:null, userPost:null }, action) {
+  postsReducer(state = { posts:[], userPost:null }, action) {
   switch (action.type) {
     case types.Get_POSTS:
       return { ...state, posts: action.data };

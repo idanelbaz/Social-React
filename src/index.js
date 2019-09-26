@@ -28,7 +28,7 @@ ReactDOM.render(<Provider store={store}>
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register ();
 
-window . addEventListener ( 'beforeinstallprompt' , ( e ) => {
-  console . log ( 'beforeinstallprompt event has fired' )
-  e . prompt ()
+window.addEventListener( 'beforeinstallprompt',(e) => {
+  console.log('beforeinstallprompt event has fired')
+  e.prompt()
 });
