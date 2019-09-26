@@ -45,7 +45,7 @@ class addNewPost extends Component {
     handleImageChange = async (e) =>{
         e.preventDefault();
         let file = e.target.files[0];
-        if(file.size > 70000) { 
+        if(file.size > 300000) { 
             this.refs.image.value = '';
             this.notify('The file is too big, upload another one')
         }
