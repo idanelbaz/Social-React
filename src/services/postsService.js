@@ -1,7 +1,7 @@
 import httpService from './http.service.js';
 
 export default {
-  query, 
+  query,
   addPost,
   deletePost,
 }
@@ -13,22 +13,22 @@ async function query() {
     return res;
   }
   catch (err) {
-   throw err;
+    throw err;
   }
 }
 
 async function addPost(post) {
   try {
-      await httpService.post(_getUrl('addpost'), post);
+    await httpService.post(_getUrl('addpost'), post);
   }
   catch (err) {
-      throw err;
+    throw err;
   }
 }
 
 async function deletePost(postId) {
   try {
-   await httpService.delete(_getUrl(postId));
+    await httpService.delete(_getUrl(postId));
   }
   catch (err) {
     throw err;
@@ -37,5 +37,5 @@ async function deletePost(postId) {
 
 
 function _getUrl(id = '') {
-  return `post/${id}`
+  return `post/${id}`;
 }

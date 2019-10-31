@@ -2,26 +2,24 @@ import httpService from './http.service.js';
 
 
 export default {
-signUp,
-logIn,
-logOut,
-getLoggedinUser,
-addFollowOn,
+    signUp,
+    logIn,
+    logOut,
+    getLoggedinUser,
+    addFollowOn,
 }
 
-
 function getLoggedinUser() {
-    if (loadFromStorage('user')) return loadFromStorage('user')
-    return null
+    if (loadFromStorage('user')) return loadFromStorage('user');
+    return null;
 }
 
 async function logIn(user) {
     try {
-            const currUser = await httpService.post(_getUrl('login'), user);
-            saveToStorage('user', currUser)
+        const currUser = await httpService.post(_getUrl('login'), user);
+        saveToStorage('user', currUser);
     }
     catch (err) {
-        console.log(err)
         throw err;
     }
 }
@@ -29,8 +27,7 @@ async function logIn(user) {
 async function signUp(user) {
     try {
         const res = await httpService.post(_getUrl('signup'), user);
-        console.log(res)
-        saveToStorage('user', res)
+        saveToStorage('user', res);
     }
     catch (err) {
         console.log(err, 'cannot do login');
@@ -42,11 +39,11 @@ function logOut() {
     localStorage.clear();
 }
 
-async function addFollowOn(userFollowedOnId){ 
+async function addFollowOn(userFollowedOnId) {
     try {
-        const user = getLoggedinUser()
-        const userWithFollow =  await httpService.put(_getUrl('addFollower'),{userFollowedOnId, userThatFollow: user});
-        saveToStorage('user', userWithFollow)
+        const user = getLoggedinUser();
+        const userWithFollow = await httpService.put(_getUrl('addFollower'), { userFollowedOnId, userThatFollow: user });
+        saveToStorage('user', userWithFollow);
     }
     catch (err) {
         throw err;
@@ -59,7 +56,7 @@ async function addFollowOn(userFollowedOnId){
 
 
 function _getUrl(id = '') {
-    return `user/${id}`
+    return `user/${id}`;
 }
 
 function saveToStorage(key, value) {
@@ -68,5 +65,5 @@ function saveToStorage(key, value) {
 }
 
 function loadFromStorage(key) {
-    return JSON.parse(localStorage.getItem(key))
+    return JSON.parse(localStorage.getItem(key));
 }

@@ -1,45 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logIn, getUser } from '../store/actions/userActions';
-import {Form,Badge} from 'react-bootstrap';
+import { Form, Badge } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 class login extends Component {
-
-    state = { user: {password:'', email:''} }
-
-    async componentDidMount() {
-
-    }
-
+    state = { user: { password: '', email: '' } }
 
     handleChange = e => {
         const { value, name } = e.target;
         this.setState((state) => ({ user: { ...state.user, [name]: value } }));
     };
 
-  
     handleSubmit = async e => {
         e.preventDefault();
-        const { dispatch } = this.props
-        try { 
-        await dispatch(logIn(this.state.user))
-        await dispatch(getUser())
-        if(this.props.user === null || !this.props.user) { 
-            this.notify('Email or Password are incorrect, please try again')
+        const { dispatch } = this.props;
+        try {
+            await dispatch(logIn(this.state.user));
+            await dispatch(getUser());
+            if (this.props.user === null || !this.props.user) {
+                this.notify('Email or Password are incorrect, please try again');
+            }
+            else {
+                const { history } = this.props;
+                history.push('/');
+            }
         }
-        else { 
-            const { history } = this.props;
-            history.push('/'); 
+        catch (err) {
+            this.notify('Email or Password are incorrect, please try again');
         }
-
-        }
-        catch(err){ 
-            this.notify('Email or Password are incorrect, please try again')
-        }      
     };
 
     notify = (txt) => toast(txt);
@@ -58,13 +50,13 @@ class login extends Component {
                         </Form.Group>
                         <Form.Group controlId="formGroupPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control name="password"  value={user.password} onChange={this.handleChange} type="password" placeholder="Password" />
+                            <Form.Control name="password" value={user.password} onChange={this.handleChange} type="password" placeholder="Password" />
                         </Form.Group>
                         <button>Login</button>
                     </Form>
                 </div>
                 <NavLink exact to="/signup">
-                    Don't got an account yet? 
+                    Don't got an account yet?
                 </NavLink>
             </div>
         )
@@ -73,7 +65,6 @@ class login extends Component {
 
 const mapStateToProps = ({ userReducer }) => {
     const { user } = userReducer;
-
     return {
         user
     }

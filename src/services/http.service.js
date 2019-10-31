@@ -14,26 +14,26 @@ async function ajax(endpoint, method = 'get', data = null, params = null) {
             method,
             data,
             params
-        })
+        });
         return res.data;
     } catch (err) {
-        throw err
+        throw err;
 
     }
 }
 
 export default {
     get(endpoint, data) {
-        return ajax(endpoint, 'GET', null, data)
+        return ajax(endpoint, 'GET', null, data);
     },
     post(endpoint, data) {
-        return ajax(endpoint, 'POST', data)
+        return ajax(endpoint, 'POST', data);
     },
     put(endpoint, data) {
-        return ajax(endpoint, 'PUT', data)
+        return ajax(endpoint, 'PUT', data);
     },
     delete(endpoint, data) {
-        return ajax(endpoint, 'DELETE', data)
+        return ajax(endpoint, 'DELETE', data);
     }
 
 }

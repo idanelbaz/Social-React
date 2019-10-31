@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../store/actions/userActions';
-import {Form,Badge} from 'react-bootstrap';
+import { Form, Badge } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { getUser } from '../store/actions/userActions';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,37 +10,33 @@ import 'react-toastify/dist/ReactToastify.css';
 
 class signup extends Component {
 
-    state = { newUser: {password:'', email:'', followOn:[] } }
+    state = { newUser: { password: '', email: '', followOn: [] } }
 
     async componentDidMount() {
-        const { dispatch } = this.props
-        await dispatch(getUser())
+        const { dispatch } = this.props;
+        await dispatch(getUser());
         if (this.props.user !== null) {
             const { history } = this.props;
             history.push('/');
-        } 
-    }     
-    
-
+        }
+    };
 
     handleChange = e => {
         const { value, name } = e.target;
         this.setState((state) => ({ newUser: { ...state.newUser, [name]: value } }));
     };
 
-  
     handleSubmit = async e => {
         e.preventDefault();
-        const { dispatch } = this.props
-        try { 
-            await dispatch(signUp(this.state.newUser))  
+        const { dispatch } = this.props;
+        try {
+            await dispatch(signUp(this.state.newUser));
             const { history } = this.props;
-            history.push('/'); 
-            }
-        catch (err){ 
-            this.notify('Cannot do sign up, Email or Password are incorrect, please try again')
-            console.log(err);
-        } 
+            history.push('/');
+        }
+        catch (err) {
+            this.notify('Cannot do sign up, Email or Password are incorrect, please try again');
+        }
     }
 
     notify = (txt) => toast(txt);
@@ -59,7 +55,7 @@ class signup extends Component {
                         </Form.Group>
                         <Form.Group controlId="formGroupPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control name="password"  value={newUser.password} onChange={this.handleChange} type="password" placeholder="Password" />
+                            <Form.Control name="password" value={newUser.password} onChange={this.handleChange} type="password" placeholder="Password" />
                         </Form.Group>
                         <button>Sign up</button>
                     </Form>
@@ -74,7 +70,6 @@ class signup extends Component {
 
 const mapStateToProps = ({ userReducer }) => {
     const { user } = userReducer;
-
     return {
         user
     }

@@ -6,9 +6,6 @@ import addPost from './views/addPost';
 import signUp from './views/signUp';
 import logIn from './views/logIn';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-
-
-
 import './App.css';
 
 
@@ -16,7 +13,6 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-
                 <Router>
                     <Header></Header>
                     <Switch>
